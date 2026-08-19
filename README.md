@@ -27,4 +27,4 @@ Compose 从 `dockerfiles/sub/.env` 读取本地参数。可参考同目录的 `.
 
 Clash 的主配置为 `dockerfiles/sub/conf/loyalsoldier_whitelist.ini`，Shadowrocket 的主配置为 `dockerfiles/sub/conf/loyalsoldier_shadowrocket.ini`。同名文件还会同步到前端和转换器构建目录，修改后必须保持内容一致。
 
-`clash_wechat_fix.patch` 中的微信进程名和域名直连规则已前置到两套规则中，Clash 配置还包含 Mihomo 支持的 `PROCESS-PATH-REGEX`。补丁中的 DNS、fake-ip 和嗅探设置会改变所有 Clash 流量的解析行为，因此未作为微信规则启用。
+`clash_wechat_fix.patch` 中的微信域名直连规则已前置到 Clash 和 Shadowrocket 配置；Clash 额外包含 Mihomo 支持的进程名与 `PROCESS-PATH-REGEX`，Shadowrocket 移动端只下发域名规则。补丁中的 DNS、fake-ip 和嗅探设置会改变所有 Clash 流量的解析行为，因此未作为微信规则启用。
