@@ -1,0 +1,11 @@
+version: "3"
+services:
+  zfile:
+    image: stilleshan/zfile
+    container_name: zfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./conf:/root/.zfile-v4
+      - ./data:/root/zfile/data
+    restart: always

@@ -1,0 +1,10 @@
+version: "3.3"
+services: 
+  ga-proxy:
+    image: stilleshan/ga-proxy
+    container_name: ga-proxy
+    ports:
+      - 12345:80
+    restart: always
+
+    

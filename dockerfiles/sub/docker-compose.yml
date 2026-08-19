@@ -1,0 +1,37 @@
+version: "3"
+services:
+  subconverter:
+    image: local/subweb-loyalsoldier:latest
+    container_name: sub
+    ports:
+      - 18080:80
+    environment:
+      API_URL: ${API_URL:-}
+      SHORT_URL: ${SHORT_URL:-}
+      SITE_NAME: ${SITE_NAME:-}
+      SUBSCRIPTION_URL_ENCODED: ${SUBSCRIPTION_URL_ENCODED:-}
+    volumes:
+      - ./conf:/usr/share/nginx/html/conf
+      - ./conf:/base/config
+    restart: unless-stopped
+
+  myurls:
+    image: stilleshan/myurls:latest
+    # container_name: myurls
+    environment:
+      - MYURLS_DOMAIN=s.ops.ci
+      - MYURLS_PROTO=https
+    volumes:
+      - ./data/myurls/logs:/app/logs
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    restart: always
+
+  redis:
+    image: redis:latest
+    # container_name: myurls-redis
+    volumes:
+      - ./data/redis:/data
+    restart: always

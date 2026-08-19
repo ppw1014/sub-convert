@@ -1,0 +1,47 @@
+# 本地环境与订阅凭据
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+/RFVXuvNBYQlL.yaml
+
+# 依赖与构建产物
+**/node_modules/
+**/dist/
+**/build/
+**/cmake-build-*/
+**/base/cache/
+**/.cache/
+**/subconverter.exe
+
+# 运行数据、数据库和日志
+dockerfiles/sub/data/
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 上游仓库内附带的示例密钥或口令文件
+dockerfiles/ocserv/ocpasswd
+dockerfiles/serverstatus/config.json
+dockerfiles/base/php-nginx/7.4-alpine/conf/etc/nginx/ssl/server.key
+dockerfiles/anylink/server/conf/vpn_cert.key
+
+# 编辑器与系统文件
+.DS_Store
+**/.DS_Store
+.idea/
+.vscode/
+**/.idea/
+**/.vscode/
+*.sw?
+*.suo
+*.ntvs*
+*.njsproj
+*.sln

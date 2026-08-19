@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  xui:
+    image: stilleshan/x-ui
+    container_name: x-ui
+    # volumes:
+    #   - ./x-ui.db:/etc/x-ui/x-ui.db
+    #   - ./ssl:/ssl
+    restart: always
+    network_mode: host

@@ -1,0 +1,19 @@
+FROM local/subconverter-patched:hy2 AS subconverter
+
+FROM node:14-alpine AS build
+
+WORKDIR /
+RUN apk add --no-cache bash curl zip
+
+WORKDIR /app
+COPY subweb /app
+RUN npm install && npm run build
+
+FROM alpine:3.16
+RUN apk add --no-cache nginx libstdc++ libgcc libcurl yaml-cpp pcre2
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=subconverter /base /base
+COPY --from=subconverter /subconverter /base/subconverter
+COPY dockerfiles/sub /app
+EXPOSE 80
+CMD [ "sh", "-c", "/app/start.sh" ]
