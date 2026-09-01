@@ -27,4 +27,5 @@ Compose 从 `dockerfiles/sub/.env` 读取本地参数。可参考同目录的 `.
 
 Clash 的主配置为 `dockerfiles/sub/conf/loyalsoldier_whitelist.ini`，Shadowrocket 的主配置为 `dockerfiles/sub/conf/loyalsoldier_shadowrocket.ini`。同名文件还会同步到前端和转换器构建目录，修改后必须保持内容一致。
 
-`clash_wechat_fix.patch` 中的微信域名直连规则已前置到 Clash 和 Shadowrocket 配置；Clash 额外包含 Mihomo 支持的进程名与 `PROCESS-PATH-REGEX`，Shadowrocket 移动端只下发域名规则。补丁中的 DNS、fake-ip 和嗅探设置会改变所有 Clash 流量的解析行为，因此未作为微信规则启用。
+- 微信与腾讯全量直连规则已内置于主配置中：Clash 包含 Mihomo 支持的桌面进程匹配（`PROCESS-NAME` / `PROCESS-PATH-REGEX`）与多媒体 CDN 域名，Shadowrocket 移动端下发全量直连域名规则。
+- 基础模板 `tindy-subconverter/base/base/all_base.tpl` 针对 Clash 输出默认配置了 `ipv6: false`，避免下游客户端在无可用公网 IPv6 环境下因 Happy Eyeballs 双栈竞争超时导致图片与多媒体加载卡顿。
