@@ -99,6 +99,10 @@ static std::string transformRuleToCommon(string_view_array &temp, const std::str
 {
     temp.clear();
     std::string strLine;
+    /// mihomo logic rules (AND/OR/NOT) contain commas inside parentheses;
+    /// splitting would corrupt them, so pass them through with the policy appended
+    if(startsWith(input, "AND,") || startsWith(input, "OR,") || startsWith(input, "NOT,"))
+        return input + "," + group;
     split(temp, input, ',');
     if(temp.size() < 2)
     {
