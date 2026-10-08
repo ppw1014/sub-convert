@@ -8,6 +8,7 @@
 - `tindy-subconverter/`：支持 Hysteria2 与 Shadowrocket 输出的转换器源码补丁。
 - `subconverter/`：Subconverter 镜像配置。
 - `dockerfiles/sub/`：当前一体化服务的启动脚本、Compose 文件和运行规则。
+- `scripts/build_mobile_rules.sh`：按固定 `clash-rules` commit 生成 Mihomo 移动端 MRS 规则包。
 - `Dockerfile.subconverter-patched`：构建定制转换器镜像。
 - `Dockerfile.local-sub`：构建前端与转换器一体化镜像。
 - `UPSTREAMS.md`：四个上游仓库的来源和基线 commit。
@@ -30,3 +31,5 @@ Clash 的主配置为 `dockerfiles/sub/conf/loyalsoldier_whitelist.ini`，Shadow
 - 微信与腾讯全量直连规则已内置于主配置中：Clash 包含 Mihomo 支持的桌面进程匹配（`PROCESS-NAME` / `PROCESS-PATH-REGEX`）与多媒体 CDN 域名，Shadowrocket 移动端下发全量直连域名规则。
 - Claude/Anthropic 域名的 QUIC（UDP 443）在 Clash 主配置中被显式 `REJECT`：逼浏览器回落 TCP，让 Claude 流量保持单一代理出口，避免代理 IP 与直连真实 IP 混源触发 Anthropic 风控。逻辑规则（`AND` / `OR` / `NOT`）仅 mihomo 内核支持，Shadowrocket 配置不下发；转换器 `transformRuleToCommon` 对逻辑规则做直通处理，防止按逗号拆分改写规则。
 - 基础模板 `tindy-subconverter/base/base/all_base.tpl` 针对 Clash 输出默认配置了 `ipv6: false`，避免下游客户端在无可用公网 IPv6 环境下因 Happy Eyeballs 双栈竞争超时导致图片与多媒体加载卡顿。
+- `Loyalsoldier Mihomo 移动端（MRS）` 使用预编译规则，需先运行 `MIHOMO_BIN=/path/to/mihomo scripts/build_mobile_rules.sh`；它是独立选项，不改变默认白名单模板。
+- 部署移动端配置时设置 `MANAGED_PREFIX` 为手机可访问的公网根地址（例如 `https://sub.example.com`），否则 MRS provider URL 会回退到转换器默认地址。

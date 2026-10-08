@@ -1,0 +1,286 @@
+port: 7890
+socks-port: 7891
+allow-lan: false
+mode: Rule
+log-level: warning
+ipv6: false
+external-controller: 127.0.0.1:9090
+proxies: ~
+proxy-groups: ~
+rule-providers:
+  private:
+    type: http
+    behavior: domain
+    format: mrs
+    url: '{{ getLink("/mobile-rules/private.mrs") }}'
+    path: ./providers/loyalsoldier-mobile-private.mrs
+    interval: 86400
+  reject:
+    type: http
+    behavior: domain
+    format: mrs
+    url: '{{ getLink("/mobile-rules/reject.mrs") }}'
+    path: ./providers/loyalsoldier-mobile-reject.mrs
+    interval: 86400
+  icloud:
+    type: http
+    behavior: domain
+    format: mrs
+    url: '{{ getLink("/mobile-rules/icloud.mrs") }}'
+    path: ./providers/loyalsoldier-mobile-icloud.mrs
+    interval: 86400
+  apple:
+    type: http
+    behavior: domain
+    format: mrs
+    url: '{{ getLink("/mobile-rules/apple.mrs") }}'
+    path: ./providers/loyalsoldier-mobile-apple.mrs
+    interval: 86400
+  google:
+    type: http
+    behavior: domain
+    format: mrs
+    url: '{{ getLink("/mobile-rules/google.mrs") }}'
+    path: ./providers/loyalsoldier-mobile-google.mrs
+    interval: 86400
+  proxy:
+    type: http
+    behavior: domain
+    format: mrs
+    url: '{{ getLink("/mobile-rules/proxy.mrs") }}'
+    path: ./providers/loyalsoldier-mobile-proxy.mrs
+    interval: 86400
+  direct:
+    type: http
+    behavior: domain
+    format: mrs
+    url: '{{ getLink("/mobile-rules/direct.mrs") }}'
+    path: ./providers/loyalsoldier-mobile-direct.mrs
+    interval: 86400
+  lancidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: '{{ getLink("/mobile-rules/lancidr.mrs") }}'
+    path: ./providers/loyalsoldier-mobile-lancidr.mrs
+    interval: 86400
+  cncidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: '{{ getLink("/mobile-rules/cncidr.mrs") }}'
+    path: ./providers/loyalsoldier-mobile-cncidr.mrs
+    interval: 86400
+  telegramcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: '{{ getLink("/mobile-rules/telegramcidr.mrs") }}'
+    path: ./providers/loyalsoldier-mobile-telegramcidr.mrs
+    interval: 86400
+rules:
+  - "AND,((DOMAIN-SUFFIX,claude.ai),(NETWORK,UDP)),REJECT"
+  - "AND,((DOMAIN-SUFFIX,claude.com),(NETWORK,UDP)),REJECT"
+  - "AND,((DOMAIN-SUFFIX,anthropic.com),(NETWORK,UDP)),REJECT"
+  - "AND,((DOMAIN-SUFFIX,nexovcc.com),(NETWORK,UDP)),REJECT"
+  - "DOMAIN,clash.razord.top,DIRECT"
+  - "DOMAIN,yacd.haishan.me,DIRECT"
+  - "DOMAIN-SUFFIX,weixin.qq.com,DIRECT"
+  - "DOMAIN-SUFFIX,wx.qq.com,DIRECT"
+  - "DOMAIN-SUFFIX,wechat.com,DIRECT"
+  - "DOMAIN-SUFFIX,qpic.cn,DIRECT"
+  - "DOMAIN-SUFFIX,qlogo.cn,DIRECT"
+  - "DOMAIN-SUFFIX,mmbiz.qpic.cn,DIRECT"
+  - "DOMAIN-SUFFIX,mmbiz.qlogo.cn,DIRECT"
+  - "DOMAIN-SUFFIX,mmbizgo.com,DIRECT"
+  - "DOMAIN-SUFFIX,servicewechat.com,DIRECT"
+  - "DOMAIN-SUFFIX,tenpay.com,DIRECT"
+  - "DOMAIN-SUFFIX,qq.com,DIRECT"
+  - "DOMAIN-SUFFIX,tencent.com,DIRECT"
+  - "DOMAIN-SUFFIX,tencent-cloud.net,DIRECT"
+  - "DOMAIN-SUFFIX,myqcloud.com,DIRECT"
+  - "DOMAIN-KEYWORD,weixin,DIRECT"
+  - "DOMAIN-KEYWORD,wechat,DIRECT"
+  - "DOMAIN-KEYWORD,qpic,DIRECT"
+  - "DOMAIN-SUFFIX,ai.com,PROXY"
+  - "DOMAIN-SUFFIX,chat.com,PROXY"
+  - "DOMAIN-SUFFIX,chatgpt.com,PROXY"
+  - "DOMAIN-SUFFIX,chatgpt.livekit.cloud,PROXY"
+  - "DOMAIN-SUFFIX,crixet.com,PROXY"
+  - "DOMAIN-SUFFIX,oaistatic.com,PROXY"
+  - "DOMAIN-SUFFIX,oaiusercontent.com,PROXY"
+  - "DOMAIN-SUFFIX,openai.com,PROXY"
+  - "DOMAIN-SUFFIX,openaiapi-site.azureedge.net,PROXY"
+  - "DOMAIN-SUFFIX,openaicom.imgix.net,PROXY"
+  - "DOMAIN-SUFFIX,sora.com,PROXY"
+  - "DOMAIN-KEYWORD,chatgpt-async-webps-prod,PROXY"
+  - "IP-CIDR,199.47.142.0/23,PROXY,no-resolve"
+  - "IP-CIDR,24.199.123.28/32,PROXY,no-resolve"
+  - "IP-CIDR,64.23.132.171/32,PROXY,no-resolve"
+  - "IP-CIDR6,2604:f20::/32,PROXY,no-resolve"
+  - "IP-ASN,401518,PROXY,no-resolve"
+  - "DOMAIN,openai-api.arkoselabs.com,PROXY"
+  - "DOMAIN-SUFFIX,client-api.arkoselabs.com,PROXY"
+  - "DOMAIN-SUFFIX,api.statsig.com,PROXY"
+  - "DOMAIN-SUFFIX,events.statsigapi.net,PROXY"
+  - "DOMAIN-SUFFIX,featuregates.org,PROXY"
+  - "DOMAIN-SUFFIX,oaistatsig.com,PROXY"
+  - "DOMAIN-SUFFIX,statsigapi.net,PROXY"
+  - "DOMAIN-SUFFIX,host.livekit.cloud,PROXY"
+  - "DOMAIN-SUFFIX,turn.livekit.cloud,PROXY"
+  - "DOMAIN-SUFFIX,anthropic.com,PROXY"
+  - "DOMAIN-SUFFIX,anthropic.com.cn,PROXY"
+  - "DOMAIN-SUFFIX,antspace.dev,PROXY"
+  - "DOMAIN-SUFFIX,clau.de,PROXY"
+  - "DOMAIN-SUFFIX,claude.ai,PROXY"
+  - "DOMAIN-SUFFIX,claude.app,PROXY"
+  - "DOMAIN-SUFFIX,claude.com,PROXY"
+  - "DOMAIN-SUFFIX,claude.new,PROXY"
+  - "DOMAIN-SUFFIX,claude.site,PROXY"
+  - "DOMAIN-SUFFIX,claudemcpclient.com,PROXY"
+  - "DOMAIN-SUFFIX,claudemcpcontent.com,PROXY"
+  - "DOMAIN-SUFFIX,claudepages.dev,PROXY"
+  - "DOMAIN-SUFFIX,claudestudio.com,PROXY"
+  - "DOMAIN-SUFFIX,claudeusercontent.com,PROXY"
+  - "DOMAIN-SUFFIX,modelcontextprotocol.com,PROXY"
+  - "DOMAIN-SUFFIX,modelcontextprotocol.io,PROXY"
+  - "DOMAIN-SUFFIX,modelcontextprotocol.net,PROXY"
+  - "DOMAIN-SUFFIX,modelcontextprotocol.org,PROXY"
+  - "IP-CIDR,160.79.104.0/21,PROXY,no-resolve"
+  - "IP-CIDR6,2607:6bc0::/32,PROXY,no-resolve"
+  - "IP-ASN,399358,PROXY,no-resolve"
+  - "DOMAIN,anthropic.auth0.com,PROXY"
+  - "DOMAIN,anthropic.com.cdn.cloudflare.net,PROXY"
+  - "DOMAIN,cdn.growthbook.io,PROXY"
+  - "DOMAIN,cdn.usefathom.com,PROXY"
+  - "DOMAIN,servd-anthropic-website.b-cdn.net,PROXY"
+  - "DOMAIN-SUFFIX,anthropic.team,PROXY"
+  - "DOMAIN-SUFFIX,ai.google.dev,PROXY"
+  - "DOMAIN-SUFFIX,ai.studio,PROXY"
+  - "DOMAIN-SUFFIX,aistudio.google.com,PROXY"
+  - "DOMAIN-SUFFIX,antigravity.google,PROXY"
+  - "DOMAIN-SUFFIX,antigravity.google.com,PROXY"
+  - "DOMAIN-SUFFIX,bard.google.com,PROXY"
+  - "DOMAIN-SUFFIX,deepmind.com,PROXY"
+  - "DOMAIN-SUFFIX,deepmind.google,PROXY"
+  - "DOMAIN-SUFFIX,gemini.google,PROXY"
+  - "DOMAIN-SUFFIX,gemini.google.com,PROXY"
+  - "DOMAIN-SUFFIX,generativeai.google,PROXY"
+  - "DOMAIN-SUFFIX,generativelanguage.googleapis.com,PROXY"
+  - "DOMAIN-SUFFIX,notebooklm.google,PROXY"
+  - "DOMAIN-SUFFIX,notebooklm.google.com,PROXY"
+  - "DOMAIN-SUFFIX,gemini.gstatic.com,PROXY"
+  - "DOMAIN-SUFFIX,makersuite.google.com,PROXY"
+  - "DOMAIN-SUFFIX,jules.google,PROXY"
+  - "DOMAIN-SUFFIX,jules.google.com,PROXY"
+  - "DOMAIN-SUFFIX,labs.google,PROXY"
+  - "DOMAIN-SUFFIX,labs.google.com,PROXY"
+  - "DOMAIN-SUFFIX,flow.google,PROXY"
+  - "DOMAIN-SUFFIX,stitch.withgoogle.com,PROXY"
+  - "DOMAIN,alkalimakersuite-pa.clients6.google.com,PROXY"
+  - "DOMAIN,webchannel-alkalimakersuite-pa.clients6.google.com,PROXY"
+  - "DOMAIN,notebooklm-pa.googleapis.com,PROXY"
+  - "DOMAIN,notebooklm.googleapis.com,PROXY"
+  - "DOMAIN,location.microsoft.com,PROXY"
+  - "DOMAIN,odc.officeapps.live.com,PROXY"
+  - "DOMAIN-SUFFIX,copilot.microsoft.com,PROXY"
+  - "DOMAIN-SUFFIX,githubcopilot.com,PROXY"
+  - "DOMAIN,copilot-proxy.githubusercontent.com,PROXY"
+  - "DOMAIN,copilot-workspace.githubnext.com,PROXY"
+  - "DOMAIN,copilotprodattachments.blob.core.windows.net,PROXY"
+  - "DOMAIN,gateway.bingviz.microsoft.net,PROXY"
+  - "DOMAIN,gateway.bingviz.microsoftapp.net,PROXY"
+  - "DOMAIN,sydney.bing.com,PROXY"
+  - "DOMAIN,services.bingapis.com,PROXY"
+  - "DOMAIN-SUFFIX,edgeservices.bing.com,PROXY"
+  - "DOMAIN-SUFFIX,perplexity.ai,PROXY"
+  - "DOMAIN-SUFFIX,pplx.ai,PROXY"
+  - "DOMAIN-SUFFIX,perplexity.com,PROXY"
+  - "DOMAIN,ppl-ai-file-upload.s3.amazonaws.com,PROXY"
+  - "DOMAIN,pplx-res.cloudinary.com,PROXY"
+  - "DOMAIN-SUFFIX,x.ai,PROXY"
+  - "DOMAIN-SUFFIX,grok.com,PROXY"
+  - "DOMAIN-SUFFIX,grok.x.com,PROXY"
+  - "DOMAIN-SUFFIX,meta.ai,PROXY"
+  - "DOMAIN-SUFFIX,llama.com,PROXY"
+  - "DOMAIN,ai.meta.com,PROXY"
+  - "DOMAIN-SUFFIX,poe.com,PROXY"
+  - "DOMAIN-SUFFIX,poecdn.net,PROXY"
+  - "DOMAIN-SUFFIX,lmarena.ai,PROXY"
+  - "DOMAIN-SUFFIX,character.ai,PROXY"
+  - "DOMAIN-SUFFIX,phind.com,PROXY"
+  - "DOMAIN-SUFFIX,you.com,PROXY"
+  - "DOMAIN-SUFFIX,cursor.com,PROXY"
+  - "DOMAIN-SUFFIX,cursor.sh,PROXY"
+  - "DOMAIN-SUFFIX,cursorapi.com,PROXY"
+  - "DOMAIN-SUFFIX,cursor-cdn.com,PROXY"
+  - "DOMAIN-SUFFIX,windsurf.com,PROXY"
+  - "DOMAIN-SUFFIX,windsurf.build,PROXY"
+  - "DOMAIN-SUFFIX,codeium.com,PROXY"
+  - "DOMAIN-SUFFIX,codeiumdata.com,PROXY"
+  - "DOMAIN-SUFFIX,v0.dev,PROXY"
+  - "DOMAIN-SUFFIX,v0.app,PROXY"
+  - "DOMAIN-SUFFIX,bolt.new,PROXY"
+  - "DOMAIN-SUFFIX,lovable.dev,PROXY"
+  - "DOMAIN-SUFFIX,replit.com,PROXY"
+  - "DOMAIN-SUFFIX,replit.app,PROXY"
+  - "DOMAIN-SUFFIX,devin.ai,PROXY"
+  - "DOMAIN-SUFFIX,cline.bot,PROXY"
+  - "DOMAIN-SUFFIX,augmentcode.com,PROXY"
+  - "DOMAIN-SUFFIX,cody.dev,PROXY"
+  - "DOMAIN-SUFFIX,sourcegraph.com,PROXY"
+  - "DOMAIN-SUFFIX,huggingface.co,PROXY"
+  - "DOMAIN-SUFFIX,hf.co,PROXY"
+  - "DOMAIN-SUFFIX,hf.space,PROXY"
+  - "DOMAIN-SUFFIX,openrouter.ai,PROXY"
+  - "DOMAIN-SUFFIX,groq.com,PROXY"
+  - "DOMAIN-SUFFIX,mistral.ai,PROXY"
+  - "DOMAIN-SUFFIX,together.ai,PROXY"
+  - "DOMAIN-SUFFIX,together.xyz,PROXY"
+  - "DOMAIN-SUFFIX,fireworks.ai,PROXY"
+  - "DOMAIN-SUFFIX,replicate.com,PROXY"
+  - "DOMAIN-SUFFIX,replicate.delivery,PROXY"
+  - "DOMAIN-SUFFIX,cohere.ai,PROXY"
+  - "DOMAIN-SUFFIX,cohere.com,PROXY"
+  - "DOMAIN-SUFFIX,cerebras.ai,PROXY"
+  - "DOMAIN-SUFFIX,midjourney.com,PROXY"
+  - "DOMAIN-SUFFIX,runway.com,PROXY"
+  - "DOMAIN-SUFFIX,runwayml.com,PROXY"
+  - "DOMAIN-SUFFIX,lumalabs.ai,PROXY"
+  - "DOMAIN-SUFFIX,pika.art,PROXY"
+  - "DOMAIN-SUFFIX,suno.ai,PROXY"
+  - "DOMAIN-SUFFIX,suno.com,PROXY"
+  - "DOMAIN-SUFFIX,udio.com,PROXY"
+  - "DOMAIN-SUFFIX,elevenlabs.io,PROXY"
+  - "DOMAIN-SUFFIX,elevenlabs.com,PROXY"
+  - "DOMAIN-SUFFIX,civitai.com,PROXY"
+  - "DOMAIN-SUFFIX,ideogram.ai,PROXY"
+  - "DOMAIN-SUFFIX,recraft.ai,PROXY"
+  - "DOMAIN-SUFFIX,chatgpt.site,PROXY"
+  - "DOMAIN-SUFFIX,openai.com.cdn.cloudflare.net,PROXY"
+  - "DOMAIN,openaiassets.blob.core.windows.net,PROXY"
+  - "DOMAIN,production-openaicom-storage.azureedge.net,PROXY"
+  - "DOMAIN-SUFFIX,antigravity-unleash.goog,PROXY"
+  - "DOMAIN,antigravity-pa.googleapis.com,PROXY"
+  - "DOMAIN,cloudcode-pa.googleapis.com,PROXY"
+  - "DOMAIN,cloudaicompanion.googleapis.com,PROXY"
+  - "DOMAIN-SUFFIX,aicode.googleapis.com,PROXY"
+  - "DOMAIN-SUFFIX,petdex.dev,DIRECT"
+  - "DOMAIN-SUFFIX,nexovcc.com,PROXY"
+  - "DOMAIN-SUFFIX,ping0.cc,PROXY"
+  - "DOMAIN-KEYWORD,input.im,DIRECT"
+  - "DOMAIN-KEYWORD,input.code,DIRECT"
+  - "DOMAIN-KEYWORD,input.codes,DIRECT"
+  - "RULE-SET,private,DIRECT"
+  - "RULE-SET,reject,REJECT"
+  - "RULE-SET,icloud,DIRECT"
+  - "RULE-SET,apple,DIRECT"
+  - "RULE-SET,google,PROXY"
+  - "RULE-SET,proxy,PROXY"
+  - "RULE-SET,direct,DIRECT"
+  - "RULE-SET,lancidr,DIRECT"
+  - "RULE-SET,cncidr,DIRECT"
+  - "RULE-SET,telegramcidr,PROXY"
+  - "GEOIP,LAN,DIRECT"
+  - "GEOIP,CN,DIRECT"
+  - "MATCH,PROXY"

@@ -20,7 +20,18 @@ for pref_file in /base/pref.toml /base/pref.example.toml; do
   sed -i 's/^max_allowed_rulesets = .*/max_allowed_rulesets = 256/' "$pref_file"
 done
 
-if [ "$API_URL" ]; then
+if [ -z "${MANAGED_PREFIX:-}" ] && [ -n "${API_URL:-}" ]; then
+  MANAGED_PREFIX="$API_URL"
+fi
+
+if [ -n "${MANAGED_PREFIX:-}" ]; then
+  export MANAGED_PREFIX
+  echo "当前 provider 公网根地址为: $MANAGED_PREFIX"
+else
+  echo "未配置 MANAGED_PREFIX，移动端 MRS 配置将使用转换器默认地址"
+fi
+
+if [ -n "${API_URL:-}" ]; then
   echo "当前 API 地址为: $API_URL"
   sed -i "s#apiUrl: ''#apiUrl: '$API_URL'#g" /usr/share/nginx/html/conf/config.js
 else

@@ -1,0 +1,17 @@
+{
+  "rulesRef": "c0c53bb50042de6aaff97785267d9e4adbef8806",
+  "compiler": "Mihomo Meta v1.19.30 darwin arm64 with go1.26.6 Sun Aug 16 10:01:05 UTC 2026 Use tags: with_gvisor",
+  "generatedAt": "2026-09-09T16:49:01Z",
+  "files": {
+    "reject": {"bytes": 1790415, "sha256": "5beda068920b787baf436d799bb397c21d0ca5e49e1bcf21c9864028bec52ff4"},
+    "direct": {"bytes": 537819, "sha256": "646fd4cf66134cc3a4799ee704b27b1f1d67008a890a0e21d4578dee310b8f58"},
+    "proxy": {"bytes": 198113, "sha256": "e47ce826a2a5bd50fa72cc8e97ad6afe3d93992f49edc2dbee81e793602106fa"},
+    "private": {"bytes": 742, "sha256": "0f9ba48d4d0b0d192a4e7c3548486dde05e5a92e6e58e8ea8c9cc302712a1420"},
+    "icloud": {"bytes": 576, "sha256": "e1e74cef80c6eab2cd66fb4b10034e066ccf7d5225441f58837f557fe24f0133"},
+    "apple": {"bytes": 1634, "sha256": "a84ec588d55d8ca0d3586d604ba33ade82ef7f9951ec12a213d6ff05698d56e4"},
+    "google": {"bytes": 1431, "sha256": "cce4428701a6f094f90ce4cc29aac6572c6e34e80ae06c48d246723f842c508f"},
+    "lancidr": {"bytes": 155, "sha256": "076ea1da10b442f01c6fb3b86a66411727a15df69d70e8d600a8a458b07a8bb0"},
+    "cncidr": {"bytes": 37757, "sha256": "712297b127f727f34532b3ea43ab77d3a35ac7bc8651ef8b77ad92e7d3ef2f80"},
+    "telegramcidr": {"bytes": 145, "sha256": "d121af95b9aeca3d8c29b2112d5e6685b2a6716383df8ae31b5fbb3408c527b3"}
+  }
+}

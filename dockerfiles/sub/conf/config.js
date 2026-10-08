@@ -31,6 +31,10 @@ window.config = {
       text: 'Loyalsoldier Shadowrocket',
     },
     {
+      value: 'config/loyalsoldier_mihomo_mobile.ini',
+      text: 'Loyalsoldier Mihomo 移动端（MRS）',
+    },
+    {
       value: 'https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online.ini',
       text: 'ACL4SSR Online',
     },
