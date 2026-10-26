@@ -12,7 +12,7 @@ for (const line of fs.readFileSync(path.join(root, source), 'utf8').split(/\r?\n
   const match = line.match(/^ruleset=([^,]+),(.+)$/);
   if (!match) continue;
   const [, policy, body] = match;
-  if (!['DIRECT', 'PROXY', 'REJECT'].includes(policy)) {
+  if (!['DIRECT', 'PROXY', 'REJECT', 'GOOGLE-AI'].includes(policy)) {
     throw new Error(`Unsupported policy: ${policy}`);
   }
 
@@ -53,7 +53,10 @@ if (rules.at(-1) !== 'MATCH,PROXY') throw new Error('Missing proxy fallback');
 // This function runs in Clash Verge's JavaScript engine, without Node APIs.
 function main(config) {
   const nodes = config.proxies || [];
-  const uses = Object.keys(config['proxy-providers'] || {});
+  // The optional local provider holds credentials outside this repository.
+  const googleProvider = 'bwg-jp';
+  const providers = config['proxy-providers'] || {};
+  const uses = Object.keys(providers).filter(name => name !== googleProvider);
   const names = [...new Set(nodes.map(node => node.name))];
   if (!names.length && !uses.length) throw new Error('Subscription contains no nodes');
   const automatic = nodes.filter(node => !['socks5', 'http'].includes(node.type)).map(node => node.name);
@@ -71,7 +74,10 @@ function main(config) {
     auto.use = uses;
     selected.use = uses;
   }
-  config['proxy-groups'] = [selected, auto];
+  const google = providers[googleProvider]
+    ? { name: 'GOOGLE-AI', type: 'select', use: [googleProvider] }
+    : { name: 'GOOGLE-AI', type: 'select', proxies: ['PROXY'] };
+  config['proxy-groups'] = [selected, auto, google];
   config.rules = SUB_CONVERT.rules;
   config['rule-providers'] = SUB_CONVERT.providers;
   config.profile = { ...(config.profile || {}), 'store-selected': true };

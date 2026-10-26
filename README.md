@@ -46,4 +46,6 @@ node scripts/build_mobile_config.mjs
 
 生成器同步四份 INI，并生成 `generated/clash-verge.js`。Clash Verge 的“全局扩展脚本”（macOS 默认位置为 `~/Library/Application Support/io.github.clash-verge-rev.clash-verge-rev/profiles/Script.js`）可使用指向此文件的符号链接，避免维护另一份规则副本。生成后在订阅页点击“重新激活订阅”。订阅自己的规则、分组增强保持为空；订阅自己的合并配置不得再次覆盖 `rules`、`rule-providers` 或 `proxy-groups`。
 
-脚本原样保留订阅节点，根据当前订阅生成 `PROXY` 和 `AUTO`，不引用固定节点、国家分组或 `GEMINI`。`PROXY` 首项是订阅首个节点，手动选定后保持出口；`AUTO` 是可选项，存在其他协议时不纳入 SOCKS5/HTTP 节点。AI 与 Antigravity 统一走 `PROXY`，国内及局域网保持直连。使用符号链接时，修改仓库规则只需重新生成、重新激活；订阅刷新只更新节点。
+脚本原样保留订阅节点，根据当前订阅生成 `PROXY`、`AUTO` 和 `GOOGLE-AI`。`PROXY` 首项是订阅首个节点，手动选定后保持出口；`AUTO` 是可选项，存在其他协议时不纳入 SOCKS5/HTTP 节点。Google AI 域名和 Antigravity 应用流量走 `GOOGLE-AI`；Claude、Codex 等继续走 `PROXY`，国内及局域网保持直连。使用符号链接时，修改仓库规则只需重新生成、重新激活；订阅刷新只更新节点。
+
+如需 Google AI 独立使用 BWG 日本出口，在 Clash Verge 的全局合并配置中添加名为 `bwg-jp` 的文件型 `proxy-providers`，引用客户端配置目录内的私有节点 YAML（例如 `./proxy-providers/bwg-jp.yaml`）。节点文件仅放本机，包含 `proxies` 列表，不进入本仓库。检测到该 provider 时，`GOOGLE-AI` 只使用其中节点，不回落到 home；`PROXY` 和 `AUTO` 不纳入此专用 provider。未配置它时，`GOOGLE-AI` 跟随 `PROXY`。通用订阅转换和移动端生成模板也定义 `GOOGLE-AI`，默认跟随 `PROXY`，不包含私有 BWG 凭据。

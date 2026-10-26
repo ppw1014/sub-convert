@@ -94,32 +94,32 @@ const SUB_CONVERT = {
     "DOMAIN-SUFFIX,siftscience.com,PROXY",
     "DOMAIN-SUFFIX,intercom.io,PROXY",
     "DOMAIN-SUFFIX,intercomcdn.com,PROXY",
-    "DOMAIN-SUFFIX,ai.google.dev,PROXY",
-    "DOMAIN-SUFFIX,ai.studio,PROXY",
-    "DOMAIN-SUFFIX,aistudio.google.com,PROXY",
-    "DOMAIN-SUFFIX,antigravity.google,PROXY",
-    "DOMAIN-SUFFIX,antigravity.google.com,PROXY",
-    "DOMAIN-SUFFIX,bard.google.com,PROXY",
-    "DOMAIN-SUFFIX,deepmind.com,PROXY",
-    "DOMAIN-SUFFIX,deepmind.google,PROXY",
-    "DOMAIN-SUFFIX,gemini.google,PROXY",
-    "DOMAIN-SUFFIX,gemini.google.com,PROXY",
-    "DOMAIN-SUFFIX,generativeai.google,PROXY",
-    "DOMAIN-SUFFIX,generativelanguage.googleapis.com,PROXY",
-    "DOMAIN-SUFFIX,notebooklm.google,PROXY",
-    "DOMAIN-SUFFIX,notebooklm.google.com,PROXY",
-    "DOMAIN-SUFFIX,gemini.gstatic.com,PROXY",
-    "DOMAIN-SUFFIX,makersuite.google.com,PROXY",
-    "DOMAIN-SUFFIX,jules.google,PROXY",
-    "DOMAIN-SUFFIX,jules.google.com,PROXY",
-    "DOMAIN-SUFFIX,labs.google,PROXY",
-    "DOMAIN-SUFFIX,labs.google.com,PROXY",
-    "DOMAIN-SUFFIX,flow.google,PROXY",
-    "DOMAIN-SUFFIX,stitch.withgoogle.com,PROXY",
-    "DOMAIN,alkalimakersuite-pa.clients6.google.com,PROXY",
-    "DOMAIN,webchannel-alkalimakersuite-pa.clients6.google.com,PROXY",
-    "DOMAIN,notebooklm-pa.googleapis.com,PROXY",
-    "DOMAIN,notebooklm.googleapis.com,PROXY",
+    "DOMAIN-SUFFIX,ai.google.dev,GOOGLE-AI",
+    "DOMAIN-SUFFIX,ai.studio,GOOGLE-AI",
+    "DOMAIN-SUFFIX,aistudio.google.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,antigravity.google,GOOGLE-AI",
+    "DOMAIN-SUFFIX,antigravity.google.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,bard.google.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,deepmind.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,deepmind.google,GOOGLE-AI",
+    "DOMAIN-SUFFIX,gemini.google,GOOGLE-AI",
+    "DOMAIN-SUFFIX,gemini.google.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,generativeai.google,GOOGLE-AI",
+    "DOMAIN-SUFFIX,generativelanguage.googleapis.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,notebooklm.google,GOOGLE-AI",
+    "DOMAIN-SUFFIX,notebooklm.google.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,gemini.gstatic.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,makersuite.google.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,jules.google,GOOGLE-AI",
+    "DOMAIN-SUFFIX,jules.google.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,labs.google,GOOGLE-AI",
+    "DOMAIN-SUFFIX,labs.google.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,flow.google,GOOGLE-AI",
+    "DOMAIN-SUFFIX,stitch.withgoogle.com,GOOGLE-AI",
+    "DOMAIN,alkalimakersuite-pa.clients6.google.com,GOOGLE-AI",
+    "DOMAIN,webchannel-alkalimakersuite-pa.clients6.google.com,GOOGLE-AI",
+    "DOMAIN,notebooklm-pa.googleapis.com,GOOGLE-AI",
+    "DOMAIN,notebooklm.googleapis.com,GOOGLE-AI",
     "DOMAIN,location.microsoft.com,PROXY",
     "DOMAIN,odc.officeapps.live.com,PROXY",
     "DOMAIN-SUFFIX,copilot.microsoft.com,PROXY",
@@ -203,14 +203,14 @@ const SUB_CONVERT = {
     "DOMAIN,production-openaicom-storage.azureedge.net,PROXY",
     "PROCESS-NAME,Codex,PROXY",
     "PROCESS-NAME,Codex (Service),PROXY",
-    "PROCESS-PATH-REGEX,(?i).*/Antigravity[^/]*\\.app/.*,PROXY",
-    "DOMAIN-SUFFIX,antigravity-unleash.goog,PROXY",
-    "DOMAIN-SUFFIX,daily-cloudcode-pa.googleapis.com,PROXY",
-    "DOMAIN-SUFFIX,daily-cloudcode-pa.sandbox.googleapis.com,PROXY",
-    "DOMAIN-SUFFIX,cloudcode-pa.googleapis.com,PROXY",
-    "DOMAIN-SUFFIX,antigravity-pa.googleapis.com,PROXY",
-    "DOMAIN-SUFFIX,cloudaicompanion.googleapis.com,PROXY",
-    "DOMAIN-SUFFIX,aicode.googleapis.com,PROXY",
+    "PROCESS-PATH-REGEX,(?i).*/Antigravity[^/]*\\.app/.*,GOOGLE-AI",
+    "DOMAIN-SUFFIX,antigravity-unleash.goog,GOOGLE-AI",
+    "DOMAIN-SUFFIX,daily-cloudcode-pa.googleapis.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,daily-cloudcode-pa.sandbox.googleapis.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,cloudcode-pa.googleapis.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,antigravity-pa.googleapis.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,cloudaicompanion.googleapis.com,GOOGLE-AI",
+    "DOMAIN-SUFFIX,aicode.googleapis.com,GOOGLE-AI",
     "DOMAIN-SUFFIX,googleapis.com,PROXY",
     "DOMAIN-SUFFIX,petdex.dev,DIRECT",
     "DOMAIN-SUFFIX,nexovcc.com,PROXY",
@@ -315,7 +315,10 @@ const SUB_CONVERT = {
 
 function main(config) {
   const nodes = config.proxies || [];
-  const uses = Object.keys(config['proxy-providers'] || {});
+  // The optional local provider holds credentials outside this repository.
+  const googleProvider = 'bwg-jp';
+  const providers = config['proxy-providers'] || {};
+  const uses = Object.keys(providers).filter(name => name !== googleProvider);
   const names = [...new Set(nodes.map(node => node.name))];
   if (!names.length && !uses.length) throw new Error('Subscription contains no nodes');
   const automatic = nodes.filter(node => !['socks5', 'http'].includes(node.type)).map(node => node.name);
@@ -333,7 +336,10 @@ function main(config) {
     auto.use = uses;
     selected.use = uses;
   }
-  config['proxy-groups'] = [selected, auto];
+  const google = providers[googleProvider]
+    ? { name: 'GOOGLE-AI', type: 'select', use: [googleProvider] }
+    : { name: 'GOOGLE-AI', type: 'select', proxies: ['PROXY'] };
+  config['proxy-groups'] = [selected, auto, google];
   config.rules = SUB_CONVERT.rules;
   config['rule-providers'] = SUB_CONVERT.providers;
   config.profile = { ...(config.profile || {}), 'store-selected': true };
